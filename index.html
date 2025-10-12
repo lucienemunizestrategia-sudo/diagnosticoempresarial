@@ -679,84 +679,87 @@
     </div>
   </footer>
 
- <!-- Tudo igual até aqui, com seu layout, formulário, rodapé, etc... -->
 
-// ✅ URL correta da Web App
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVonvn2DoLBH0mu96QAUw1unSf03Iwz8CEcNTJDNnloqruXa9RxLJuIHAYffp8RkNYWw/exec';
+<!-- Tudo igual até aqui, com seu layout, formulário, rodapé, etc... -->
 
-const form = document.getElementById('formulario');
-const submitBtn = document.getElementById('submitBtn');
-const successMessage = document.getElementById('successMessage');
-const errorAlert = document.getElementById('errorAlert');
+<!-- INÍCIO DO SCRIPT CORRIGIDO -->
+<script>
+  // URL do Google Apps Script
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVonvn2DoLBH0mu96QAUw1unSf03Iwz8CEcNTJDNnloqruXa9RxLJuIHAYffp8RkNYWw/exec';
 
-// Define horário de início automaticamente
-document.getElementById('inicio').value = new Date().toLocaleTimeString('pt-BR', {
-  hour: '2-digit',
-  minute: '2-digit'
-});
+  const form = document.getElementById('formulario');
+  const submitBtn = document.getElementById('submitBtn');
+  const successMessage = document.getElementById('successMessage');
+  const errorAlert = document.getElementById('errorAlert');
 
-// Máscaras para telefone e CPF/CNPJ
-function aplicarMascaraTelefone(e) {
-  let valor = e.target.value.replace(/\D/g, '');
-  if (valor.length <= 11) {
-    valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
-    valor = valor.replace(/(\d)(\d{4})$/, '$1-$2');
-  }
-  e.target.value = valor;
-}
+  // Define horário de início automaticamente
+  document.getElementById('inicio').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
 
-function aplicarMascaraCPFCNPJ(e) {
-  let valor = e.target.value.replace(/\D/g, '');
-  if (valor.length <= 11) {
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-  } else {
-    valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
-    valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-    valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
-    valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
-  }
-  e.target.value = valor;
-}
-
-document.getElementById('telefone').addEventListener('input', aplicarMascaraTelefone);
-document.getElementById('cpf_cnpj').addEventListener('input', aplicarMascaraCPFCNPJ);
-
-// Envio do formulário via JSON
-form.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  submitBtn.disabled = true;
-  errorAlert.classList.remove('show');
-  successMessage.classList.remove('show');
-
-  const dados = {};
-  new FormData(form).forEach((value, key) => {
-    dados[key] = value;
-  });
-
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(dados),
-    headers: {
-      'Content-Type': 'application/json'
+  // Máscaras para telefone e CPF/CNPJ
+  function aplicarMascaraTelefone(e) {
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length <= 11) {
+      valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
+      valor = valor.replace(/(\d)(\d{4})$/, '$1-$2');
     }
-  })
-  .then(response => response.json())
-  .then(result => {
-    if (result.status === 'success') {
-      successMessage.classList.add('show');
-      form.reset();
+    e.target.value = valor;
+  }
+
+  function aplicarMascaraCPFCNPJ(e) {
+    let valor = e.target.value.replace(/\D/g, '');
+    if (valor.length <= 11) {
+      valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+      valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+      valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
     } else {
-      console.error('Erro retornado do servidor:', result.message);
-      errorAlert.classList.add('show');
+      valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+      valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+      valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+      valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
     }
-    submitBtn.disabled = false;
-  })
-  .catch(error => {
-    console.error('Erro no envio:', error);
-    errorAlert.classList.add('show');
-    submitBtn.disabled = false;
+    e.target.value = valor;
+  }
+
+  document.getElementById('telefone').addEventListener('input', aplicarMascaraTelefone);
+  document.getElementById('cpf_cnpj').addEventListener('input', aplicarMascaraCPFCNPJ);
+
+  // ENVIO DO FORMULÁRIO COMO JSON
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    errorAlert.classList.remove('show');
+    successMessage.classList.remove('show');
+
+    // Transforma dados do form em JSON
+    const dados = {};
+    new FormData(form).forEach((value, key) => {
+      dados[key] = value;
+    });
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(dados),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.status === 'success') {
+        successMessage.classList.add('show');
+        form.reset();
+      } else {
+        console.error('Erro retornado do servidor:', result.message);
+        errorAlert.classList.add('show');
+      }
+      submitBtn.disabled = false;
+    })
+    .catch(error => {
+      console.error('Erro no envio:', error);
+      errorAlert.classList.add('show');
+      submitBtn.disabled = false;
+    });
   });
-});
+</script>
+<!-- FIM DO SCRIPT -->
