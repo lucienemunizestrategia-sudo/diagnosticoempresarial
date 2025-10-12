@@ -202,6 +202,20 @@
       display: block;
     }
 
+    .error-alert {
+      background-color: var(--vermelho-erro);
+      color: var(--branco);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .error-alert.show {
+      display: block;
+    }
+
     .footer {
       background: linear-gradient(135deg, var(--azul-principal) 0%, var(--azul-escuro) 100%);
       color: var(--branco);
@@ -340,10 +354,14 @@
 
   <main>
     <div class="success-message" id="successMessage">
-      Formulário enviado com sucesso! Obrigado por participar.
+      ✓ Formulário enviado com sucesso! Obrigado por participar.
     </div>
 
-    <form id="formulario" novalidate>
+    <div class="error-alert" id="errorAlert">
+      ✗ Erro ao enviar formulário. Por favor, tente novamente.
+    </div>
+
+    <form id="formulario">
       <div class="form-section">
         <h2>Informações Básicas</h2>
         
@@ -662,12 +680,18 @@
   </footer>
 
   <script>
+    // URL do Google Apps Script
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVonvn2DoLBH0mu96QAUw1unSf03Iwz8CEcNTJDNnloqruXa9RxLJuIHAYffp8RkNYWw/exec';
+
     const form = document.getElementById('formulario');
     const submitBtn = document.getElementById('submitBtn');
     const successMessage = document.getElementById('successMessage');
+    const errorAlert = document.getElementById('errorAlert');
 
+    // Define horário de início automaticamente
     document.getElementById('inicio').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
 
+    // Máscaras para telefone e CPF/CNPJ
     function aplicarMascaraTelefone(e) {
       let valor = e.target.value.replace(/\D/g, '');
       if (valor.length <= 11) {
@@ -690,28 +714,3 @@
         valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
       }
       e.target.value = valor;
-    }
-
-    function validarCPFCNPJ(valor) {
-      valor = valor.replace(/\D/g, '');
-      return valor.length === 11 || valor.length === 14;
-    }
-
-    function validarTelefone(valor) {
-      const telefone = valor.replace(/\D/g, '');
-      return telefone.length >= 10 && telefone.length <= 11;
-    }
-
-    document.getElementById('telefone').addEventListener('input', aplicarMascaraTelefone);
-    document.getElementById('cpf_cnpj').addEventListener('input', aplicarMascaraCPFCNPJ);
-
-    function validarCampo(campo) {
-      const errorDiv = document.getElementById(`error-${campo.id}`);
-
-      if (campo.hasAttribute('required') && !campo.value.trim()) {
-        campo.classList.add('error');
-        if (errorDiv) errorDiv.classList.add('show');
-        return false;
-      }
-
-      if (campo.id === 'cpf_cnpj' && campo.value && !validarCPF
