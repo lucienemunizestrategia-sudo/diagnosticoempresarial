@@ -161,12 +161,6 @@
       gap: 20px;
     }
 
-    @media (max-width: 768px) {
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
     button[type="submit"] {
       background-color: var(--amarelo-acento);
       color: var(--azul-principal);
@@ -235,7 +229,7 @@
 
     .footer-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmin(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 40px;
       margin-bottom: 40px;
     }
@@ -315,6 +309,10 @@
     }
 
     @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
       main {
         padding: 20px;
         margin: 20px;
@@ -676,158 +674,3 @@
         valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
         valor = valor.replace(/(\d)(\d{4})$/, '$1-$2');
       }
-      e.target.value = valor;
-    }
-
-    function aplicarMascaraCPFCNPJ(e) {
-      let valor = e.target.value.replace(/\D/g, '');
-      if (valor.length <= 11) {
-        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-      } else {
-        valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
-        valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-        valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
-        valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
-      }
-      e.target.value = valor;
-    }
-
-    function validarCPFCNPJ(valor) {
-      valor = valor.replace(/\D/g, '');
-      return valor.length === 11 || valor.length === 14;
-    }
-
-    function validarTelefone(valor) {
-      const telefone = valor.replace(/\D/g, '');
-      return telefone.length >= 10 && telefone.length <= 11;
-    }
-
-    document.getElementById('telefone').addEventListener('input', aplicarMascaraTelefone);
-    document.getElementById('cpf_cnpj').addEventListener('input', aplicarMascaraCPFCNPJ);
-
-    function validarCampo(campo) {
-      const errorDiv = document.getElementById(`error-${campo.id}`);
-
-      if (campo.hasAttribute('required') && !campo.value.trim()) {
-        campo.classList.add('error');
-        if (errorDiv) errorDiv.classList.add('show');
-        return false;
-      }
-
-      if (campo.id === 'cpf_cnpj' && campo.value && !validarCPFCNPJ(campo.value)) {
-        campo.classList.add('error');
-        if (errorDiv) errorDiv.classList.add('show');
-        return false;
-      }
-
-      if (campo.id === 'telefone' && campo.value && !validarTelefone(campo.value)) {
-        campo.classList.add('error');
-        if (errorDiv) errorDiv.classList.add('show');
-        return false;
-      }
-
-      if (campo.type === 'number' && campo.hasAttribute('min')) {
-        const minValue = parseInt(campo.getAttribute('min'));
-        if (parseInt(campo.value) < minValue) {
-          campo.classList.add('error');
-          if (errorDiv) errorDiv.classList.add('show');
-          return false;
-        }
-      }
-
-      if (campo.type === 'date' && campo.value) {
-        const dataInformada = new Date(campo.value);
-        const hoje = new Date();
-        if (dataInformada > hoje) {
-          campo.classList.add('error');
-          if (errorDiv) {
-            errorDiv.textContent = 'Data não pode ser futura';
-            errorDiv.classList.add('show');
-          }
-          return false;
-        }
-      }
-
-      campo.classList.remove('error');
-      if (errorDiv) errorDiv.classList.remove('show');
-      return true;
-    }
-
-    const campos = form.querySelectorAll('input, select, textarea');
-    campos.forEach(campo => {
-      campo.addEventListener('blur', () => validarCampo(campo));
-      campo.addEventListener('input', () => {
-        if (campo.classList.contains('error')) {
-          validarCampo(campo);
-        }
-      });
-    });
-
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      document.getElementById('fim').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
-
-      let formularioValido = true;
-      campos.forEach(campo => {
-        if (!validarCampo(campo)) {
-          formularioValido = false;
-        }
-      });
-
-      if (!formularioValido) {
-        alert('Por favor, corrija os erros no formulário antes de enviar.');
-        const primeiroErro = form.querySelector('.error');
-        if (primeiroErro) {
-          primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          primeiroErro.focus();
-        }
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando...';
-
-      const formData = new FormData(form);
-      const dados = {};
-      formData.forEach((value, key) => {
-        dados[key] = value;
-      });
-
-      try {
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVonvn2DoLBH0mu96QAUw1unSf03Iwz8CEcNTJDNnloqruXa9RxLJuIHAYffp8RkNYWw/exec';
-        
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dados)
-        });
-
-        successMessage.classList.add('show');
-        form.reset();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        setTimeout(() => {
-          document.getElementById('inicio').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
-        }, 100);
-
-        setTimeout(() => {
-          successMessage.classList.remove('show');
-        }, 5000);
-
-      } catch (error) {
-        console.error('Erro ao enviar formulário:', error);
-        alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Enviar Formulário';
-      }
-    });
-  </script>
-</body>
-</html>
