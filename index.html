@@ -674,3 +674,44 @@
         valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
         valor = valor.replace(/(\d)(\d{4})$/, '$1-$2');
       }
+      e.target.value = valor;
+    }
+
+    function aplicarMascaraCPFCNPJ(e) {
+      let valor = e.target.value.replace(/\D/g, '');
+      if (valor.length <= 11) {
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+      } else {
+        valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+        valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+        valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+        valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+      }
+      e.target.value = valor;
+    }
+
+    function validarCPFCNPJ(valor) {
+      valor = valor.replace(/\D/g, '');
+      return valor.length === 11 || valor.length === 14;
+    }
+
+    function validarTelefone(valor) {
+      const telefone = valor.replace(/\D/g, '');
+      return telefone.length >= 10 && telefone.length <= 11;
+    }
+
+    document.getElementById('telefone').addEventListener('input', aplicarMascaraTelefone);
+    document.getElementById('cpf_cnpj').addEventListener('input', aplicarMascaraCPFCNPJ);
+
+    function validarCampo(campo) {
+      const errorDiv = document.getElementById(`error-${campo.id}`);
+
+      if (campo.hasAttribute('required') && !campo.value.trim()) {
+        campo.classList.add('error');
+        if (errorDiv) errorDiv.classList.add('show');
+        return false;
+      }
+
+      if (campo.id === 'cpf_cnpj' && campo.value && !validarCPF
