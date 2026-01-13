@@ -161,8 +161,20 @@
       gap: 20px;
     }
 
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-row-4 {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 2fr;
+      gap: 20px;
+    }
+
     @media (max-width: 768px) {
-      .form-row {
+      .form-row, .form-row-3, .form-row-4 {
         grid-template-columns: 1fr;
       }
     }
@@ -208,13 +220,36 @@
       display: block;
     }
 
+    .helper-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .radio-option input[type="radio"] {
+      width: auto;
+      margin: 0;
+    }
+
     .footer {
       background: linear-gradient(135deg, var(--azul-principal) 0%, var(--azul-escuro) 100%);
       color: var(--branco);
       padding: 60px 30px 30px 30px;
       margin-top: 80px;
       position: relative;
-      overflow: hidden;
     }
 
     .footer::before {
@@ -227,93 +262,6 @@
       background: linear-gradient(135deg, var(--azul-secundaria) 0%, var(--amarelo-acento) 100%);
     }
 
-    .footer-container {
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 0;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-
-    .footer-section h3 {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 20px;
-      color: var(--amarelo-acento);
-      margin-bottom: 20px;
-    }
-
-    .footer-section p,
-    .footer-section a {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 15px;
-      line-height: 1.8;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 10px;
-      transition: color 0.3s ease;
-    }
-
-    .footer-section a:hover {
-      color: var(--amarelo-acento);
-    }
-
-    .footer-logo {
-      height: 60px;
-      width: auto;
-      margin-bottom: 20px;
-      display: block;
-    }
-
-    .footer-highlight {
-      background: rgba(236, 194, 3, 0.15);
-      padding: 15px;
-      border-radius: 10px;
-      border-left: 4px solid var(--amarelo-acento);
-      margin-top: 15px;
-    }
-
-    .footer-highlight strong {
-      color: var(--amarelo-acento);
-    }
-
-    .social-links {
-      display: flex;
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .social-links a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      font-size: 14px;
-      color: #fff;
-    }
-
-    .social-links a:hover {
-      background: var(--amarelo-acento);
-      color: var(--azul-escuro);
-      transform: translateY(-3px);
-    }
-
-    .footer-bottom {
-      text-align: center;
-      padding-top: 30px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 14px;
-    }
-
     @media (max-width: 768px) {
       main {
         padding: 20px;
@@ -322,10 +270,6 @@
 
       .header h1 {
         font-size: 22px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -375,11 +319,32 @@
           <div class="error-message" id="error-responsavel">Campo obrigatório</div>
         </div>
 
+        <div class="form-group">
+          <label>O negócio possui:<span class="required">*</span></label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" name="tipo_documento" id="tipo_cpf" value="cpf" required>
+              <label for="tipo_cpf" style="margin: 0;">CPF</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" name="tipo_documento" id="tipo_cnpj" value="cnpj" required>
+              <label for="tipo_cnpj" style="margin: 0;">CNPJ</label>
+            </div>
+          </div>
+          <div class="error-message" id="error-tipo_documento">Selecione CPF ou CNPJ</div>
+        </div>
+
         <div class="form-row">
-          <div class="form-group">
-            <label>CPF ou CNPJ<span class="required">*</span></label>
-            <input type="text" name="cpf_cnpj" id="cpf_cnpj" required>
-            <div class="error-message" id="error-cpf_cnpj">CPF ou CNPJ inválido</div>
+          <div class="form-group" id="grupo_cpf" style="display: none;">
+            <label>CPF<span class="required">*</span></label>
+            <input type="text" name="cpf" id="cpf" maxlength="14">
+            <div class="error-message" id="error-cpf">CPF inválido</div>
+          </div>
+
+          <div class="form-group" id="grupo_cnpj" style="display: none;">
+            <label>CNPJ<span class="required">*</span></label>
+            <input type="text" name="cnpj" id="cnpj" maxlength="18">
+            <div class="error-message" id="error-cnpj">CNPJ inválido</div>
           </div>
 
           <div class="form-group">
@@ -397,7 +362,11 @@
 
         <div class="form-group">
           <label>Localização do Negócio<span class="required">*</span></label>
-          <input type="text" name="localizacao" id="localizacao" required>
+          <select name="localizacao" id="localizacao" required>
+            <option value="">Selecione</option>
+            <option value="Maré">Maré</option>
+            <option value="Jacarezinho">Jacarezinho</option>
+          </select>
           <div class="error-message" id="error-localizacao">Campo obrigatório</div>
         </div>
 
@@ -409,25 +378,179 @@
       </div>
 
       <div class="form-section">
-        <h2>Contato</h2>
+        <h2>Dados Pessoais do Responsável</h2>
 
         <div class="form-row">
           <div class="form-group">
-            <label>Telefone<span class="required">*</span></label>
-            <input type="tel" name="telefone" id="telefone" required>
-            <div class="error-message" id="error-telefone">Telefone inválido</div>
+            <label>Sexo<span class="required">*</span></label>
+            <select name="sexo" id="sexo" required>
+              <option value="">Selecione</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+            </select>
+            <div class="error-message" id="error-sexo">Campo obrigatório</div>
           </div>
 
           <div class="form-group">
-            <label>Rede Social</label>
-            <input type="text" name="rede_social" id="rede_social" placeholder="Instagram, Facebook, etc.">
+            <label>Data de Nascimento<span class="required">*</span></label>
+            <input type="date" name="nascimento" id="nascimento" required>
+            <div class="helper-text">Formato: DD/MM/AAAA</div>
+            <div class="error-message" id="error-nascimento">Campo obrigatório</div>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Endereço<span class="required">*</span></label>
-          <input type="text" name="endereco" id="endereco" required>
-          <div class="error-message" id="error-endereco">Campo obrigatório</div>
+          <label>Ocupação<span class="required">*</span></label>
+          <select name="ocupacao" id="ocupacao" required>
+            <option value="">Selecione</option>
+            <option value="1000">1000 - Não possui</option>
+            <option value="1001">1001 - Negócio informal (sem CNPJ)</option>
+            <option value="1002">1002 - Atividade Rural</option>
+            <option value="1003">1003 - Ambulante</option>
+            <option value="1004">1004 - Artesão</option>
+            <option value="1005">1005 - Autônomo</option>
+          </select>
+          <div class="error-message" id="error-ocupacao">Campo obrigatório</div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Endereço Completo</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tipo de Logradouro<span class="required">*</span></label>
+            <select name="tipo_logradouro" id="tipo_logradouro" required>
+              <option value="">Selecione</option>
+              <option value="Rua">Rua</option>
+              <option value="Avenida">Avenida</option>
+              <option value="Travessa">Travessa</option>
+              <option value="Praça">Praça</option>
+              <option value="Alameda">Alameda</option>
+            </select>
+            <div class="error-message" id="error-tipo_logradouro">Campo obrigatório</div>
+          </div>
+
+          <div class="form-group">
+            <label>Logradouro<span class="required">*</span></label>
+            <input type="text" name="logradouro" id="logradouro" required>
+            <div class="error-message" id="error-logradouro">Campo obrigatório</div>
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Número<span class="required">*</span></label>
+            <input type="text" name="numero" id="numero" required>
+            <div class="helper-text">Somente números</div>
+            <div class="error-message" id="error-numero">Campo obrigatório</div>
+          </div>
+
+          <div class="form-group">
+            <label>Complemento</label>
+            <input type="text" name="complemento" id="complemento">
+          </div>
+
+          <div class="form-group">
+            <label>Bairro<span class="required">*</span></label>
+            <select name="bairro" id="bairro" required>
+              <option value="">Selecione</option>
+              <option value="Maré">Maré</option>
+              <option value="Jacarezinho">Jacarezinho</option>
+            </select>
+            <div class="error-message" id="error-bairro">Campo obrigatório</div>
+          </div>
+        </div>
+
+        <div class="form-row-4">
+          <div class="form-group">
+            <label>Município<span class="required">*</span></label>
+            <input type="text" name="municipio" id="municipio" value="Rio de Janeiro" required>
+            <div class="error-message" id="error-municipio">Campo obrigatório</div>
+          </div>
+
+          <div class="form-group">
+            <label>UF<span class="required">*</span></label>
+            <input type="text" name="uf" id="uf" value="RJ" maxlength="2" required>
+            <div class="error-message" id="error-uf">Campo obrigatório</div>
+          </div>
+
+          <div class="form-group">
+            <label>CEP<span class="required">*</span></label>
+            <input type="text" name="cep" id="cep" required>
+            <div class="error-message" id="error-cep">CEP inválido</div>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de Endereço<span class="required">*</span></label>
+            <select name="tipo_endereco" id="tipo_endereco" required>
+              <option value="">Selecione</option>
+              <option value="P">P - Pessoal</option>
+              <option value="C">C - Comercial</option>
+            </select>
+            <div class="error-message" id="error-tipo_endereco">Campo obrigatório</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Contato</h2>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>DDD<span class="required">*</span></label>
+            <input type="text" name="ddd" id="ddd" maxlength="2" required>
+            <div class="helper-text">Somente números</div>
+            <div class="error-message" id="error-ddd">Campo obrigatório</div>
+          </div>
+
+          <div class="form-group">
+            <label>Telefone<span class="required">*</span></label>
+            <input type="tel" name="telefone" id="telefone" required>
+            <div class="helper-text">Somente números</div>
+            <div class="error-message" id="error-telefone">Telefone inválido</div>
+          </div>
+
+          <div class="form-group">
+            <label>Complemento</label>
+            <input type="text" name="telefone_complemento" id="telefone_complemento">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de Telefone<span class="required">*</span></label>
+          <select name="tipo_telefone" id="tipo_telefone" required>
+            <option value="">Selecione</option>
+            <option value="R">R - Residencial</option>
+            <option value="C">C - Comercial</option>
+            <option value="M">M - Móvel</option>
+            <option value="F">F - Fax</option>
+            <option value="P">P - Pessoal</option>
+          </select>
+          <div class="error-message" id="error-tipo_telefone">Campo obrigatório</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>E-mail<span class="required">*</span></label>
+            <input type="email" name="email" id="email" required>
+            <div class="error-message" id="error-email">E-mail inválido</div>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de E-mail<span class="required">*</span></label>
+            <select name="tipo_email" id="tipo_email" required>
+              <option value="">Selecione</option>
+              <option value="P">P - Pessoal</option>
+              <option value="C">C - Comercial</option>
+            </select>
+            <div class="error-message" id="error-tipo_email">Campo obrigatório</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Rede Social</label>
+          <input type="text" name="rede_social" id="rede_social" placeholder="Instagram, Facebook, etc.">
         </div>
       </div>
 
@@ -621,91 +744,163 @@
     </form>
   </main>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-grid">
-        <div class="footer-section">
-          <h3>Casa Prospera Maré</h3>
-          <p><strong>Endereço:</strong><br>Rua Teixeira Ribeiro, 527<br>Maré - Rio de Janeiro/RJ</p>
-          <p><strong>WhatsApp:</strong><br><a href="https://wa.me/5521975150995" target="_blank">(21) 97515-0995</a></p>
-          <p><strong>E-mail:</strong><br><a href="mailto:casaprosperamare@gmail.com">casaprosperamare@gmail.com</a></p>
-          <div class="footer-highlight">
-            <strong>Horário de Atendimento:</strong><br>Segunda a Sexta: 9h às 17h
-          </div>
-        </div>
-
-        <div class="footer-section">
-          <h3>Casa Prospera Jacarezinho</h3>
-          <p><strong>Endereço:</strong><br>Rua Amaro Rangel, 49<br>Jacarezinho - Rio de Janeiro/RJ</p>
-          <p><strong>WhatsApp:</strong><br><a href="https://wa.me/5521970387576" target="_blank">(21) 97038-7576</a></p>
-          <p><strong>E-mail:</strong><br><a href="mailto:prosperajacarezinho@gmail.com">prosperajacarezinho@gmail.com</a></p>
-          <div class="footer-highlight">
-            <strong>Horário de Atendimento:</strong><br>Segunda a Sexta: 9h às 17h
-          </div>
-        </div>
-
-        <div class="footer-section">
-          <img src="https://lh3.googleusercontent.com/d/1x5sNkC9vd7CI78y0xdkWvgoadxPEMcIf=w800" alt="Logotipo Prospera Rio" class="footer-logo">
-          <h3>Sobre o Prospera Rio</h3>
-          <p>Iniciativa do Instituto BrArte que apoia empreendedores da Maré e Jacarezinho com capacitação, mentoria e recursos para impulsionar seus negócios.</p>
-          <p><strong>Site:</strong><br><a href="https://www.institutobrarte.org" target="_blank">www.institutobrarte.org</a></p>
-          <div class="social-links">
-            <a href="https://www.instagram.com/prospera.rio" target="_blank">Prospera Rio</a>
-            <a href="https://www.instagram.com/institutobrarte" target="_blank">Instituto BR</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2025 Prospera Rio - Instituto BrArte. Todos os direitos reservados.</p>
-        <p>Desenvolvido com dedicação para empreendedores da Maré e Jacarezinho.</p>
-      </div>
-    </div>
-  </footer>
-
   <script>
     const form = document.getElementById('formulario');
     const submitBtn = document.getElementById('submitBtn');
     const successMessage = document.getElementById('successMessage');
 
+    // URL DO WEB APP - SERÁ ATUALIZADA APÓS PUBLICAR NO GOOGLE APPS SCRIPT
+    const GOOGLE_SCRIPT_URL = 'COLE_AQUI_A_URL_DO_SEU_WEB_APP_DEPOIS_DE_PUBLICAR';
+
+    // Define horário de início automaticamente
     document.getElementById('inicio').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+
+    // Controla exibição dos campos CPF/CNPJ
+    document.querySelectorAll('input[name="tipo_documento"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const grupoCPF = document.getElementById('grupo_cpf');
+        const grupoCNPJ = document.getElementById('grupo_cnpj');
+        const inputCPF = document.getElementById('cpf');
+        const inputCNPJ = document.getElementById('cnpj');
+
+        if (this.value === 'cpf') {
+          grupoCPF.style.display = 'block';
+          grupoCNPJ.style.display = 'none';
+          inputCPF.required = true;
+          inputCNPJ.required = false;
+          inputCNPJ.value = '';
+        } else {
+          grupoCPF.style.display = 'none';
+          grupoCNPJ.style.display = 'block';
+          inputCNPJ.required = true;
+          inputCPF.required = false;
+          inputCPF.value = '';
+        }
+      });
+    });
+
+    // Máscaras de formatação
+    function aplicarMascaraCPF(e) {
+      let valor = e.target.value.replace(/\D/g, '');
+      valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+      valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+      valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+      e.target.value = valor;
+    }
+
+    function aplicarMascaraCNPJ(e) {
+      let valor = e.target.value.replace(/\D/g, '');
+      valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+      valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+      valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+      valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+      e.target.value = valor;
+    }
+
+    function aplicarMascaraCEP(e) {
+      let valor = e.target.value.replace(/\D/g, '');
+      valor = valor.replace(/^(\d{5})(\d)/, '$1-$2');
+      e.target.value = valor;
+    }
 
     function aplicarMascaraTelefone(e) {
       let valor = e.target.value.replace(/\D/g, '');
-      if (valor.length <= 11) {
-        valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2');
-        valor = valor.replace(/(\d)(\d{4})$/, '$1-$2');
-      }
       e.target.value = valor;
     }
 
-    function aplicarMascaraCPFCNPJ(e) {
-      let valor = e.target.value.replace(/\D/g, '');
-      if (valor.length <= 11) {
-        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-        valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-        valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-      } else {
-        valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
-        valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
-        valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
-        valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
-      }
+    function aplicarMascaraDDD(e) {
+      let valor = e.target.value.replace(/\D/g, '').substring(0, 2);
       e.target.value = valor;
     }
 
-    function validarCPFCNPJ(valor) {
-      valor = valor.replace(/\D/g, '');
-      return valor.length === 11 || valor.length === 14;
+    // Validações
+    function validarCPF(cpf) {
+      cpf = cpf.replace(/\D/g, '');
+      if (cpf.length !== 11) return false;
+      
+      // Validação básica (aceita todos os CPFs com 11 dígitos)
+      let soma = 0;
+      let resto;
+      
+      if (cpf === "00000000000") return false;
+      
+      for (let i = 1; i <= 9; i++) {
+        soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
+      }
+      resto = (soma * 10) % 11;
+      
+      if ((resto === 10) || (resto === 11)) resto = 0;
+      if (resto !== parseInt(cpf.substring(9, 10))) return false;
+      
+      soma = 0;
+      for (let i = 1; i <= 10; i++) {
+        soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
+      }
+      resto = (soma * 10) % 11;
+      
+      if ((resto === 10) || (resto === 11)) resto = 0;
+      if (resto !== parseInt(cpf.substring(10, 11))) return false;
+      
+      return true;
+    }
+
+    function validarCNPJ(cnpj) {
+      cnpj = cnpj.replace(/\D/g, '');
+      if (cnpj.length !== 14) return false;
+      
+      // Validação básica (aceita todos os CNPJs com 14 dígitos)
+      if (/^(\d)\1+$/.test(cnpj)) return false;
+      
+      let tamanho = cnpj.length - 2;
+      let numeros = cnpj.substring(0, tamanho);
+      let digitos = cnpj.substring(tamanho);
+      let soma = 0;
+      let pos = tamanho - 7;
+      
+      for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+      }
+      
+      let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+      if (resultado != digitos.charAt(0)) return false;
+      
+      tamanho = tamanho + 1;
+      numeros = cnpj.substring(0, tamanho);
+      soma = 0;
+      pos = tamanho - 7;
+      
+      for (let i = tamanho; i >= 1; i--) {
+        soma += numeros.charAt(tamanho - i) * pos--;
+        if (pos < 2) pos = 9;
+      }
+      
+      resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+      if (resultado != digitos.charAt(1)) return false;
+      
+      return true;
     }
 
     function validarTelefone(valor) {
       const telefone = valor.replace(/\D/g, '');
-      return telefone.length >= 10 && telefone.length <= 11;
+      return telefone.length >= 8 && telefone.length <= 9;
     }
 
+    function validarCEP(valor) {
+      const cep = valor.replace(/\D/g, '');
+      return cep.length === 8;
+    }
+
+    function validarEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Aplicar máscaras
+    document.getElementById('cpf').addEventListener('input', aplicarMascaraCPF);
+    document.getElementById('cnpj').addEventListener('input', aplicarMascaraCNPJ);
     document.getElementById('telefone').addEventListener('input', aplicarMascaraTelefone);
-    document.getElementById('cpf_cnpj').addEventListener('input', aplicarMascaraCPFCNPJ);
+    document.getElementById('cep').addEventListener('input', aplicarMascaraCEP);
+    document.getElementById('ddd').addEventListener('input', aplicarMascaraDDD);
 
     function validarCampo(campo) {
       const errorDiv = document.getElementById(`error-${campo.id}`);
@@ -716,13 +911,31 @@
         return false;
       }
 
-      if (campo.id === 'cpf_cnpj' && campo.value && !validarCPFCNPJ(campo.value)) {
+      if (campo.id === 'cpf' && campo.required && campo.value && !validarCPF(campo.value)) {
+        campo.classList.add('error');
+        if (errorDiv) errorDiv.classList.add('show');
+        return false;
+      }
+
+      if (campo.id === 'cnpj' && campo.required && campo.value && !validarCNPJ(campo.value)) {
         campo.classList.add('error');
         if (errorDiv) errorDiv.classList.add('show');
         return false;
       }
 
       if (campo.id === 'telefone' && campo.value && !validarTelefone(campo.value)) {
+        campo.classList.add('error');
+        if (errorDiv) errorDiv.classList.add('show');
+        return false;
+      }
+
+      if (campo.id === 'cep' && campo.value && !validarCEP(campo.value)) {
+        campo.classList.add('error');
+        if (errorDiv) errorDiv.classList.add('show');
+        return false;
+      }
+
+      if (campo.id === 'email' && campo.value && !validarEmail(campo.value)) {
         campo.classList.add('error');
         if (errorDiv) errorDiv.classList.add('show');
         return false;
@@ -777,12 +990,20 @@
         }
       });
 
+      // Valida radio buttons de tipo_documento
+      const tipoDocumento = document.querySelector('input[name="tipo_documento"]:checked');
+      if (!tipoDocumento) {
+        document.getElementById('error-tipo_documento').classList.add('show');
+        formularioValido = false;
+      } else {
+        document.getElementById('error-tipo_documento').classList.remove('show');
+      }
+
       if (!formularioValido) {
         alert('Por favor, corrija os erros no formulário antes de enviar.');
-        const primeiroErro = form.querySelector('.error');
+        const primeiroErro = form.querySelector('.error, .error-message.show');
         if (primeiroErro) {
           primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          primeiroErro.focus();
         }
         return;
       }
@@ -796,10 +1017,10 @@
         dados[key] = value;
       });
 
+      // Adiciona telefone completo
+      dados.telefone_completo = `(${dados.ddd}) ${dados.telefone}`;
+
       try {
-        // URL do Web App do Google Apps Script
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVonvn2DoLBH0mu96QAUw1unSf03Iwz8CEcNTJDNnloqruXa9RxLJuIHAYffp8RkNYWw/exec';
-        
         const response = await fetch(GOOGLE_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
@@ -815,6 +1036,10 @@
 
         setTimeout(() => {
           document.getElementById('inicio').value = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+          document.getElementById('municipio').value = 'Rio de Janeiro';
+          document.getElementById('uf').value = 'RJ';
+          document.getElementById('grupo_cpf').style.display = 'none';
+          document.getElementById('grupo_cnpj').style.display = 'none';
         }, 100);
 
         setTimeout(() => {
