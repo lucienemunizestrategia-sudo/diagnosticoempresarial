@@ -555,9 +555,9 @@
             <div class="error-message" id="error-tipo_email">Campo obrigatório</div>
           </div>
 
-          <div class="form-group">
-            <label>Rede Social</label>
-            <input type="text" name="rede_social" id="rede_social" placeholder="Instagram, Facebook, etc.">
+          <label>Rede Social- Coloque o usuário da Rede<span class="required">*</span></label>
+<input type="text" name="rede_social" id="rede_social" placeholder="Instagram, Facebook, etc." required>
+<div class="error-message" id="error-rede_social">Campo obrigatório</div>
           </div>
         </div>
       </div>
@@ -584,8 +584,9 @@
         </div>
 
         <div class="form-group">
-          <label>Você já pensou ou escreveu algum plano para isso?</label>
-          <input type="text" name="plano" id="plano">
+         <label>Você já pensou ou escreveu algum plano para isso?<span class="required">*</span></label>
+<input type="text" name="plano" id="plano" required>
+<div class="error-message" id="error-plano">Campo obrigatório</div>
         </div>
       </div>
 
@@ -632,27 +633,31 @@
         </div>
 
         <div class="form-group">
-          <label>Materiais (ex.: equipamentos, produtos)</label>
-          <textarea name="materiais" id="materiais"></textarea>
+          <label>Materiais (ex.: equipamentos, produtos)<span class="required">*</span></label>
+<textarea name="materiais" id="materiais" required></textarea>
+<div class="error-message" id="error-materiais">Campo obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label>Tecnologia (ex.: celular, internet, máquinas de pagamento)</label>
-          <textarea name="tecnologia" id="tecnologia"></textarea>
+         <label>Tecnologia (ex.: celular, internet, máquinas de pagamento)<span class="required">*</span></label>
+<textarea name="tecnologia" id="tecnologia" required></textarea>
+<div class="error-message" id="error-tecnologia">Campo obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label>Existe algo que dificulta o trabalho no dia a dia?</label>
-          <select name="dificuldade" id="dificuldade">
+         <label>Existe algo que dificulta o trabalho no dia a dia?<span class="required">*</span></label>
+<select name="dificuldade" id="dificuldade" required>
             <option value="">Selecione uma opção</option>
             <option value="Sim">Sim</option>
             <option value="Não">Não</option>
           </select>
+          <div class="error-message" id="error-dificuldade">Campo obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label>Se sim, o que?</label>
-          <textarea name="dificuldade_2" id="dificuldade_2"></textarea>
+         <label>Se sim, o que?<span class="required">*</span></label>
+<textarea name="dificuldade_2" id="dificuldade_2" required></textarea>
+<div class="error-message" id="error-dificuldade_2">Campo obrigatório</div>
         </div>
       </div>
 
@@ -672,13 +677,14 @@
         </div>
 
         <div class="form-group">
-          <label>Você acompanha quanto vende?</label>
-          <select name="acompanha" id="acompanha">
+         <label>Você acompanha quanto vende?<span class="required">*</span></label>
+<select name="acompanha" id="acompanha" required>
             <option value="">Selecione uma opção</option>
             <option value="Sim">Sim</option>
             <option value="Não">Não</option>
             <option value="Às vezes">Às vezes</option>
           </select>
+          <div class="error-message" id="error-acompanha">Campo obrigatório</div>
         </div>
 
         <div class="form-group">
@@ -692,22 +698,25 @@
         <h2>Equipe e Capacitação</h2>
         
         <div class="form-group">
-          <label>Quem mais te ajuda no negócio e o que essas pessoas fazem?</label>
-          <textarea name="quem_ajuda" id="quem_ajuda"></textarea>
+         <label>Quem mais te ajuda no negócio e o que essas pessoas fazem?<span class="required">*</span></label>
+<textarea name="quem_ajuda" id="quem_ajuda" required></textarea>
+<div class="error-message" id="error-quem_ajuda">Campo obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label>Você ou as pessoas que te ajudam já fizeram algum curso ou treinamento?</label>
-          <select name="curso" id="curso">
+         <label>Você ou as pessoas que te ajudam já fizeram algum curso ou treinamento?<span class="required">*</span></label>
+<select name="curso" id="curso" required>
             <option value="">Selecione uma opção</option>
             <option value="Sim">Sim</option>
             <option value="Não">Não</option>
           </select>
+          <div class="error-message" id="error-curso">Campo obrigatório</div>
         </div>
 
         <div class="form-group">
-          <label>Se sim, qual?</label>
-          <input type="text" name="curso_detalhe" id="curso_detalhe">
+          <label>Se sim, qual?<span class="required">*</span></label>
+<input type="text" name="curso_detalhe" id="curso_detalhe" required>
+<div class="error-message" id="error-curso_detalhe">Campo obrigatório</div>
         </div>
       </div>
 
